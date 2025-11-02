@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
 
 class UserInfoTile extends StatelessWidget {
-  final String title;
-  final String description;
-  const UserInfoTile({super.key, required this.title, required this.description});
+  final String label;
+  final String data;
+  const UserInfoTile({super.key, required this.label, required this.data});
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+    padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
     child: Row(
       children: [
-        Text(
-          title,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        Expanded(
+          flex: 1,
+          child: Row(
+            children: [
+              Text(
+                label,
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+              ),
+              Spacer(),
+              Text(
+                ":",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
         ),
         SizedBox(width: 10),
-        Text(":"),
-        SizedBox(width: 10),
-        Text(
-          description,
-          style: TextStyle(color: Colors.amber, fontWeight: FontWeight.w600),
+        Expanded(
+          flex: 3,
+          child: Text(
+            data,
+            style: TextStyle(color: Colors.amber, fontWeight: FontWeight.w600),
+          ),
         ),
       ],
     ),

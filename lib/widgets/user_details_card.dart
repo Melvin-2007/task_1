@@ -31,10 +31,10 @@ class UserDetailsCard extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              UserInfoTile(title: "Name", description: user.name!),
-              UserInfoTile(title: "User ID", description: user.userId.toString()),
-              UserInfoTile(title: "Age", description: user.age.toString()),
-              UserInfoTile(title: "Profession", description: user.profession!),
+              UserInfoTile(label: "Name", data: user.name!),
+              UserInfoTile(label: "User ID", data: user.userId.toString()),
+              UserInfoTile(label: "Age", data: user.age.toString()),
+              UserInfoTile(label: "Profession", data: user.profession!),
             ],
           ),
         ),

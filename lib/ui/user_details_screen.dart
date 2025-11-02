@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart' show Either;
-import 'package:task_1/exceptions/custom_exception.dart';
+import 'package:task_1/exceptions/user_fetch_exception.dart';
 import 'package:task_1/models/user_model.dart';
-import 'package:task_1/ui/user_details_functions.dart';
+import 'package:task_1/network/user_service.dart';
 import 'package:task_1/widgets/user_details_card.dart';
+
+part 'user_details_functions.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -21,7 +23,7 @@ class UserDetailsScreen extends StatefulWidget {
 
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
   static late TextEditingController _textEditingController;
-  static Future<Either<CustomException, User>>? _fetchUser;
+  static Future<Either<UserFetchException, User>>? _fetchUser;
   @override
   void initState() {
     _textEditingController = TextEditingController();
@@ -62,7 +64,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                 onPressed: () {
                   final String id = _textEditingController.text.trim();
                   setState(() {
-                    _fetchUser = fetchUser(id);
+                    _fetchUser = fetchUserDetails(id);
                   });
                 },
                 style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.blue)),
