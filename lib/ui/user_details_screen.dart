@@ -1,18 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fpdart/fpdart.dart' show Either;
-import 'package:task_1/exceptions/user_fetch_exception.dart';
+import 'package:task_1/enums/user_fetch_state.dart';
 import 'package:task_1/models/user_model.dart';
 import 'package:task_1/network/user_service.dart';
-import 'package:task_1/widgets/user_details_card.dart';
-
-part 'user_details_functions.dart';
-
-class App extends StatelessWidget {
-  const App({super.key});
-
-  @override
-  Widget build(BuildContext context) => MaterialApp(home: UserDetailsScreen());
-}
+import 'package:task_1/widgets/user_details_card_builder.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   const UserDetailsScreen({super.key});
@@ -23,9 +13,14 @@ class UserDetailsScreen extends StatefulWidget {
 
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
   static late TextEditingController _textEditingController;
-  static Future<Either<UserFetchException, User>>? _fetchUser;
+  static User? _user;
+  static late String _errorMessage;
+  static late UserFetchState _userFetchState;
+
   @override
   void initState() {
+    _userFetchState = UserFetchState.initial;
+    _errorMessage = "";
     _textEditingController = TextEditingController();
     super.initState();
   }
@@ -61,43 +56,59 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               ),
               SizedBox(height: 20),
               TextButton(
-                onPressed: () {
-                  final String id = _textEditingController.text.trim();
-                  setState(() {
-                    _fetchUser = fetchUserDetails(id);
-                  });
-                },
+                onPressed: () => _fetchUser(),
                 style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.blue)),
                 child: Text("Fetch User", style: TextStyle(color: Colors.white)),
               ),
               SizedBox(height: 20),
-              FutureBuilder(
-                future: _fetchUser,
-                builder: (context, snapShot) {
-                  if (snapShot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(color: Colors.grey);
-                  } else if (snapShot.hasError) {
-                    return Text(
-                      "Something went wrong",
-                      style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
-                    );
-                  } else if (snapShot.hasData) {
-                    final response = snapShot.data!;
-                    return response.fold(
-                      (e) => Text(
-                        e.message,
-                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
-                      ),
-                      (user) => UserDetailsCard(user: user),
-                    );
-                  }
-                  return Text("Enter a user id and click button to get the user details");
-                },
-              ),
+              UserDetailsCardBuilder(user: _user, userFetchState: _userFetchState, errorMessage: _errorMessage),
             ],
           ),
         ),
       ),
     );
+  }
+
+  _fetchUser() async {
+    setState(() {
+      _userFetchState = UserFetchState.loading;
+    });
+    final String id = _textEditingController.text.trim();
+
+    if (id.isEmpty) {
+      _setErrorState(msg: "Enter a valid id");
+      return;
+    }
+
+    try {
+      final UserModel userModel = await UserService.fetchUser(id);
+
+      // sets user fetch state to error if success is false
+      if (userModel.success == false) {
+        _setErrorState(msg: userModel.error.toString());
+        return;
+      }
+      
+      // sets user fetch state to error if data or user model is null
+      if (userModel.data == null || userModel.data?.user == null) {
+        _setErrorState();
+        return;
+      }
+
+      setState(() {
+        _userFetchState = UserFetchState.success;
+        _user = userModel.data!.user!;
+      });
+
+    } on Exception catch (_) {
+      _setErrorState();
+    }
+  }
+
+  _setErrorState({String? msg}) {
+    setState(() {
+      _userFetchState = UserFetchState.error;
+      _errorMessage = msg ?? "Something went wrong";
+    });
   }
 }
