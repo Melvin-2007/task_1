@@ -70,17 +70,18 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   }
 
   _fetchUser() async {
-    setState(() {
-      _userFetchState = UserFetchState.loading;
-    });
     final String id = _textEditingController.text.trim();
-
     if (id.isEmpty) {
       _setErrorState(msg: "Enter a valid id");
       return;
     }
-
+    
     try {
+      setState(() {
+        _userFetchState = UserFetchState.loading;
+      });
+
+      // Get user model from api
       final UserModel userModel = await UserService.fetchUser(id);
 
       // sets user fetch state to error if success is false
@@ -88,7 +89,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
         _setErrorState(msg: userModel.error.toString());
         return;
       }
-      
+
       // sets user fetch state to error if data or user model is null
       if (userModel.data == null || userModel.data?.user == null) {
         _setErrorState();
@@ -99,7 +100,6 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
         _userFetchState = UserFetchState.success;
         _user = userModel.data!.user!;
       });
-
     } on Exception catch (_) {
       _setErrorState();
     }
