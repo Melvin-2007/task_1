@@ -11,6 +11,7 @@ class UserService {
     final String url = "$_baseUrl/$id";
     try {
       final response = await http.get(Uri.parse(url));
+      log(response.statusCode.toString());
       // checks if status code is 200 or 404 and return User model
       if (response.statusCode == 200 || response.statusCode == 404) {
         return UserModel.fromJson(jsonDecode(response.body));

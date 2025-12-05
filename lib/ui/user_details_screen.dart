@@ -35,7 +35,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsetsGeometry.fromLTRB(200, 0, 200, 0),
+        padding: EdgeInsets.fromLTRB(200, 0, 200, 0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
