@@ -26,12 +26,10 @@ class ApiResponse {
 class Data {
     UserModel? user;
     String? message;
-
     Data({
         this.user,
         this.message,
     });
-
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         user: json["user"] == null ? null : UserModel.fromJson(json["user"]),
         message: json["message"],

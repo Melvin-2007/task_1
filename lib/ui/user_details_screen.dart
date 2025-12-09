@@ -52,7 +52,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               ),
               SizedBox(height: 20),
               TextButton(
-                onPressed: () => context.read<UserDetailsProvider>().fetchUser(textEditingController.text),
+                onPressed: () => context.read<UserDetailsProvider>().fetchUser(textEditingController.text.trim()),
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(
                     context.watch<UserDetailsProvider>().userFetchState == UserFetchState.loading
@@ -68,13 +68,13 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                   // shows loading indicator when userFetchState is loading
                   if (prov.userFetchState == UserFetchState.loading) {
                     return CircularProgressIndicator(color: Colors.deepPurple);
-                  } 
+                  }
                   // shows user details card when userFetchState is success
                   else if (prov.userFetchState == UserFetchState.success) {
                     return UserDetailsCard(user: prov.user!);
                   }
                   // shows error message when userFetchState is error
-                   else if (prov.userFetchState == UserFetchState.error) {
+                  else if (prov.userFetchState == UserFetchState.error) {
                     return Text(
                       prov.errorMessage,
                       style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
