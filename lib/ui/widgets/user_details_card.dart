@@ -16,7 +16,7 @@ class UserDetailsCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
-              user.profileImage ?? "",
+              user.profileImage,
               fit: BoxFit.cover,
               errorBuilder: (error, obj, stackTracer) => Container(
                 height: 300,
@@ -32,10 +32,10 @@ class UserDetailsCard extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                UserInfoTile(label: "Name", data: user.name!),
+                UserInfoTile(label: "Name", data: user.name),
                 UserInfoTile(label: "User ID", data: user.userId.toString()),
                 UserInfoTile(label: "Age", data: user.age.toString()),
-                UserInfoTile(label: "Profession", data: user.profession!),
+                UserInfoTile(label: "Profession", data: user.profession),
               ],
             ),
           ),

@@ -17,13 +17,13 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   @override
   void initState() {
     textEditingController = TextEditingController();
+    context.read<UserDetailsProvider>().clearProvider();
     super.initState();
   }
 
   @override
   void dispose() {
     textEditingController.dispose();
-    Provider.of<UserDetailsProvider>(context, listen: false).clearProvider();
     super.dispose();
   }
 
