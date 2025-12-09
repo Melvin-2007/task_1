@@ -1,16 +1,16 @@
 
-class UserModel {
+class ApiResponse {
     bool? success;
     Data? data;
     String? error;
 
-    UserModel({
+    ApiResponse({
         this.success,
         this.data,
         this.error,
     });
 
-    factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+    factory ApiResponse.fromJson(Map<String, dynamic> json) => ApiResponse(
         success: json["success"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         error: json["error"],
@@ -24,7 +24,7 @@ class UserModel {
 }
 
 class Data {
-    User? user;
+    UserModel? user;
     String? message;
 
     Data({
@@ -33,7 +33,7 @@ class Data {
     });
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        user: json["user"] == null ? null : UserModel.fromJson(json["user"]),
         message: json["message"],
     );
 
@@ -43,14 +43,14 @@ class Data {
     };
 }
 
-class User {
+class UserModel {
     int? userId;
     String? name;
     int? age;
     String? profession;
     String? profileImage;
 
-    User({
+    UserModel({
         this.userId,
         this.name,
         this.age,
@@ -58,7 +58,7 @@ class User {
         this.profileImage,
     });
 
-    factory User.fromJson(Map<String, dynamic> json) => User(
+    factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         userId: json["user_id"],
         name: json["name"],
         age: json["age"],

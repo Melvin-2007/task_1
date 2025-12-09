@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:task_1/models/user_model.dart';
-import 'package:task_1/widgets/user_info_tile.dart';
+import 'package:task_1/ui/widgets/user_info_tile.dart';
 
 class UserDetailsCard extends StatelessWidget {
-  final User user;
+  final UserModel user;
   const UserDetailsCard({super.key, required this.user});
 
   @override
@@ -17,7 +17,7 @@ class UserDetailsCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
               user.profileImage ?? "",
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
               errorBuilder: (error, obj, stackTracer) => Container(
                 height: 300,
                 width: 300,
