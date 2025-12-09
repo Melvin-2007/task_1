@@ -15,7 +15,7 @@ class UserDetailsProvider extends ChangeNotifier {
   Future<void> fetchUser(String id) async {
     
     // To not allow multiple requests at the same time
-    if(userFetchState == UserFetchState.loading) return;
+    if(_userFetchState == UserFetchState.loading) return;
 
     // To not allow empty id
     if (id.isEmpty || int.tryParse(id) == null) {
